@@ -1,0 +1,29 @@
+{
+    "name": "setup-lua",
+    "version": "1.0.0",
+    "description": "",
+    "main": "dist/index.js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/actboy168/setup-lua.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/actboy168/setup-lua/issues"
+    },
+    "homepage": "https://github.com/actboy168/setup-lua#readme",
+    "scripts": {
+        "postinstall": "npm run build",
+        "build": "ncc build index.js -o dist",
+        "dev": "npm run build && ncc run index.js"
+    },
+    "devDependencies": {
+        "@actions/core": "^1.2.4",
+        "@actions/exec": "^1.0.4",
+        "@actions/io": "^1.0.2",
+        "@actions/tool-cache": "^1.6.0",
+        "@zeit/ncc": "^0.20.5"
+    }
+}

@@ -1,0 +1,8 @@
+name: 'Install lua'
+description: 'Installs lua and adds it to the path'
+inputs:
+  luaVersion:
+    default: '5.4'
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
