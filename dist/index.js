@@ -1112,7 +1112,7 @@ async function main() {
         await exec.exec("make", ["-j", "linux"], { cwd: luaExtractPath });
     } else if (process.platform === 'win32') {
         io.cp(__webpack_require__.ab + "winmake.bat", path.join(luaExtractPath, "winmake.bat"))
-        await exec.exec("winmake.bat", { cwd: luaExtractPath });
+        await exec.exec("cmd", ["/q", "/c", "winmake.bat"], { cwd: luaExtractPath });
     } else {
         throw new Error(`Unsupported platform '${process.platform}'`);
     }
