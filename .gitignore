@@ -1,2 +1,4 @@
 /node_modules
-/dist/luamake
+/dist/.install
+/.install
+/temp

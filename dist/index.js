@@ -256,10 +256,10 @@ async function main() {
     if (VERSION_ALIASES[luaVersion]) {
         luaVersion = VERSION_ALIASES[luaVersion]
     }
-    const luaExtractPath = path.join(process.cwd(), ".install", `lua-${luaVersion}`)
+    const luaExtractPath = __webpack_require__.ab + ".install\\lua-" + luaVersion
     const luaSourceTar = await tc.downloadTool(`https://www.lua.org/ftp/lua-${luaVersion}.tar.gz`)
     await io.mkdirP(luaExtractPath)
-    await tc.extractTar(luaSourceTar, ".install")
+    await tc.extractTar(luaSourceTar,  __webpack_require__.ab + ".install")
     if (process.platform === 'darwin') {
         await exec.exec("brew install readline ncurses");
         await exec.exec("make", ["-j", "macosx"], { cwd: luaExtractPath });
