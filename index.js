@@ -24,7 +24,7 @@ async function main() {
         await exec.exec("brew install readline ncurses");
         await exec.exec("make", ["-j", "macosx"], { cwd: luaExtractPath });
     } else if (process.platform === 'linux') {
-        await exec.exec("ls", { cwd: path.join(process.cwd(), ".install") });
+        await exec.exec("ls", [], { cwd: path.join(process.cwd(), ".install") });
         await exec.exec("sudo apt-get install -q libreadline-dev libncurses-dev", undefined, {
             env: {
                 DEBIAN_FRONTEND: "noninteractive",
