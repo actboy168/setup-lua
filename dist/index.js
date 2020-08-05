@@ -259,21 +259,20 @@ async function main() {
     const luaExtractPath = __webpack_require__.ab + ".install\\lua-" + luaVersion
     const luaSourceTar = await tc.downloadTool(`https://www.lua.org/ftp/lua-${luaVersion}.tar.gz`)
     await io.mkdirP(luaExtractPath)
+    await tc.extractTar(luaSourceTar, __webpack_require__.ab + ".install")
     if (process.platform === 'darwin') {
         await exec.exec("brew install readline ncurses");
-        await tc.extractTar(luaSourceTar, ".install")
         await exec.exec("make", ["-j", "macosx"], { cwd: luaExtractPath });
     } else if (process.platform === 'linux') {
+        await exec.exec("ls", { cwd: __webpack_require__.ab + ".install" });
         await exec.exec("sudo apt-get install -q libreadline-dev libncurses-dev", undefined, {
             env: {
                 DEBIAN_FRONTEND: "noninteractive",
                 TERM: "linux"
             }
         });
-        await tc.extractTar(luaSourceTar, ".install")
         await exec.exec("make", ["-j", "linux"], { cwd: luaExtractPath });
     } else if (process.platform === 'win32') {
-        await tc.extractTar(luaSourceTar, __webpack_require__.ab + ".install")
         io.cp(__webpack_require__.ab + "winmake.bat", path.join(luaExtractPath, "winmake.bat"))
         await exec.exec("cmd", ["/q", "/c", "winmake.bat"], { cwd: luaExtractPath });
     } else {
