@@ -242,7 +242,6 @@ const core = __webpack_require__(626)
 const exec = __webpack_require__(28)
 const io = __webpack_require__(258)
 const tc = __webpack_require__(114)
-const path = __webpack_require__(622)
 
 const VERSION_ALIASES = {
     "5.1": "5.1.5",
@@ -251,20 +250,23 @@ const VERSION_ALIASES = {
     "5.4": "5.4.0",
 }
 
+function path_join() {
+    return Array.prototype.slice.call(arguments).join("/")
+}
+
 async function main() {
     let luaVersion = core.getInput('luaVersion', { required: true })
     if (VERSION_ALIASES[luaVersion]) {
         luaVersion = VERSION_ALIASES[luaVersion]
     }
-    const luaExtractPath = __webpack_require__.ab + ".install\\lua-" + luaVersion
+    const luaExtractPath = path_join(process.cwd(), ".install", `lua-${luaVersion}`)
     const luaSourceTar = await tc.downloadTool(`https://www.lua.org/ftp/lua-${luaVersion}.tar.gz`)
     await io.mkdirP(luaExtractPath)
-    await tc.extractTar(luaSourceTar, __webpack_require__.ab + ".install")
+    await tc.extractTar(luaSourceTar, path_join(process.cwd(), ".install"))
     if (process.platform === 'darwin') {
         await exec.exec("brew install readline ncurses");
         await exec.exec("make", ["-j", "macosx"], { cwd: luaExtractPath });
     } else if (process.platform === 'linux') {
-        await exec.exec("ls", [], { cwd: __webpack_require__.ab + ".install" });
         await exec.exec("sudo apt-get install -q libreadline-dev libncurses-dev", undefined, {
             env: {
                 DEBIAN_FRONTEND: "noninteractive",
@@ -273,12 +275,12 @@ async function main() {
         });
         await exec.exec("make", ["-j", "linux"], { cwd: luaExtractPath });
     } else if (process.platform === 'win32') {
-        io.cp(__webpack_require__.ab + "winmake.bat", path.join(luaExtractPath, "winmake.bat"))
+        io.cp(path_join(__dirname, "winmake.bat"), path_join(luaExtractPath, "winmake.bat"))
         await exec.exec("cmd", ["/q", "/c", "winmake.bat"], { cwd: luaExtractPath });
     } else {
         throw new Error(`Unsupported platform '${process.platform}'`);
     }
-    core.addPath(path.join(luaExtractPath, "src"));
+    core.addPath(path_join(luaExtractPath, "src"));
 }
 
 main().catch(err => {
