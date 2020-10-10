@@ -6,8 +6,8 @@ const tc = require("@actions/tool-cache")
 const VERSION_ALIASES = {
     "5.1": "5.1.5",
     "5.2": "5.2.4",
-    "5.3": "5.3.5",
-    "5.4": "5.4.0",
+    "5.3": "5.3.6",
+    "5.4": "5.4.1",
 }
 
 function path_join() {

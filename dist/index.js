@@ -246,8 +246,8 @@ const tc = __webpack_require__(114)
 const VERSION_ALIASES = {
     "5.1": "5.1.5",
     "5.2": "5.2.4",
-    "5.3": "5.3.5",
-    "5.4": "5.4.0",
+    "5.3": "5.3.6",
+    "5.4": "5.4.1",
 }
 
 function path_join() {
