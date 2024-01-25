@@ -9,7 +9,7 @@ jobs:
         os: [windows, ubuntu, macos]
         luaVersion: ['5.4', '5.3', '5.2', '5.1']
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: ./
       with:
         luaVersion: ${{ matrix.luaVersion }}
