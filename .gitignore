@@ -2,3 +2,4 @@
 /dist/.install
 /.install
 /temp
+package-lock.json
