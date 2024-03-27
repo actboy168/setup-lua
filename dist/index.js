@@ -6767,9 +6767,13 @@ async function main() {
         luaVersion = VERSION_ALIASES[luaVersion]
     }
     const luaExtractPath = path_join(process.cwd(), ".install", `lua-${luaVersion}`)
-    const luaSourceTar = await tc.downloadTool(`https://www.lua.org/ftp/lua-${luaVersion}.tar.gz`)
     await io.mkdirP(luaExtractPath)
-    await tc.extractTar(luaSourceTar, path_join(process.cwd(), ".install"))
+    if (luaVersion === "latest") {
+        await exec.exec("git", ["clone", "https://github.com/lua/lua"], { cwd: luaExtractPath });
+    } else {
+        const luaSourceTar = await tc.downloadTool(`https://www.lua.org/ftp/lua-${luaVersion}.tar.gz`)
+        await tc.extractTar(luaSourceTar, path_join(process.cwd(), ".install"))
+    }
     if (process.platform === 'darwin') {
         await exec.exec("brew install readline ncurses");
         await exec.exec("make", ["-j", "macosx"], { cwd: luaExtractPath });
