@@ -6769,7 +6769,7 @@ async function main() {
     const luaExtractPath = path_join(process.cwd(), ".install", `lua-${luaVersion}`)
     await io.mkdirP(luaExtractPath)
     if (luaVersion === "latest") {
-        await exec.exec("git", ["clone", "https://github.com/lua/lua"], { cwd: luaExtractPath });
+        await exec.exec("git", ["clone", "https://github.com/lua/lua", "."], { cwd: luaExtractPath });
     } else {
         const luaSourceTar = await tc.downloadTool(`https://www.lua.org/ftp/lua-${luaVersion}.tar.gz`)
         await tc.extractTar(luaSourceTar, path_join(process.cwd(), ".install"))
