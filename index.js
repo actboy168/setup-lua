@@ -29,7 +29,11 @@ async function main() {
     }
     if (process.platform === 'darwin') {
         await exec.exec("brew install readline ncurses");
-        await exec.exec("make", ["-j", "macosx"], { cwd: luaExtractPath });
+        if (luaVersion === "latest") {
+            await exec.exec("make", ["-j", "lua", "make -j lua  MYCFLAGS=\"-std=c99 -DLUA_USE_MACOSX -DLUA_USE_READLINE\""], { cwd: luaExtractPath });
+        } else {
+            await exec.exec("make", ["-j", "macosx"], { cwd: luaExtractPath });
+        }
     } else if (process.platform === 'linux') {
         await exec.exec("sudo apt-get install -q libreadline-dev libncurses-dev", undefined, {
             env: {
@@ -37,7 +41,11 @@ async function main() {
                 TERM: "linux"
             }
         });
-        await exec.exec("make", ["-j", "linux"], { cwd: luaExtractPath });
+        if (luaVersion === "latest") {
+            await exec.exec("make", ["-j", "lua"], { cwd: luaExtractPath });
+        } else {
+            await exec.exec("make", ["-j", "linux"], { cwd: luaExtractPath });
+        }
     } else if (process.platform === 'win32') {
         io.cp(path_join(__dirname, "winmake.bat"), path_join(luaExtractPath, "winmake.bat"))
         await exec.exec("cmd", ["/q", "/c", "winmake.bat"], { cwd: luaExtractPath });
