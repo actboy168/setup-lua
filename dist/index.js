@@ -6791,7 +6791,11 @@ async function main() {
     } else {
         throw new Error(`Unsupported platform '${process.platform}'`);
     }
-    core.addPath(path_join(luaExtractPath, "src"));
+    if (luaVersion === "latest") {
+        core.addPath(luaExtractPath);
+    } else {
+        core.addPath(path_join(luaExtractPath, "src"));
+    }
 }
 
 main().catch(err => {
