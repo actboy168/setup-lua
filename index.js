@@ -30,7 +30,7 @@ async function main() {
     if (process.platform === 'darwin') {
         await exec.exec("brew install readline ncurses");
         if (luaVersion === "latest") {
-            await exec.exec("make", ["-j", "lua", "make -j lua  MYCFLAGS=\"-std=c99 -DLUA_USE_MACOSX -DLUA_USE_READLINE\""], { cwd: luaExtractPath });
+            await exec.exec("make", ["-j", "lua", "MYCFLAGS=\"-std=c99 -DLUA_USE_MACOSX -DLUA_USE_READLINE\""], { cwd: luaExtractPath });
         } else {
             await exec.exec("make", ["-j", "macosx"], { cwd: luaExtractPath });
         }
