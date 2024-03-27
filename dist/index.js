@@ -6777,7 +6777,8 @@ async function main() {
     if (process.platform === 'darwin') {
         await exec.exec("brew install readline ncurses");
         if (luaVersion === "latest") {
-            await exec.exec("make", ["-j", "lua", "MYCFLAGS=\"-std=c99 -DLUA_USE_MACOSX -DLUA_USE_READLINE\""], { cwd: luaExtractPath });
+            await exec.exec("gcc", ["-o", "onelua.o", "-c", "onelua.c", "-Wall", "-O2", "-std=c99", "-DLUA_USE_MACOSX", "-DLUA_USE_READLINE"], { cwd: luaExtractPath });
+            await exec.exec("gcc", ["-o", "lua", "onelua.o", "-lm", "-ldl", "-lreadline"], { cwd: luaExtractPath });
         } else {
             await exec.exec("make", ["-j", "macosx"], { cwd: luaExtractPath });
         }
@@ -6789,7 +6790,8 @@ async function main() {
             }
         });
         if (luaVersion === "latest") {
-            await exec.exec("make", ["-j", "lua"], { cwd: luaExtractPath });
+            await exec.exec("gcc", ["-o", "onelua.o", "-c", "onelua.c", "-Wall", "-O2", "-std=c99", "-DLUA_USE_LINUX", "-DLUA_USE_READLINE"], { cwd: luaExtractPath });
+            await exec.exec("gcc", ["-o", "lua", "onelua.o", "-lm", "-ldl", "-lreadline"], { cwd: luaExtractPath });
         } else {
             await exec.exec("make", ["-j", "linux"], { cwd: luaExtractPath });
         }
