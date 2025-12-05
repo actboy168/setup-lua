@@ -8,7 +8,7 @@ const VERSION_ALIASES = {
     "5.2": "5.2.4",
     "5.3": "5.3.6",
     "5.4": "5.4.8",
-    "5.5": "5.5.0-beta",
+    "5.5": "5.5.0-rc2",
     "git": "latest",
 }
 
@@ -25,7 +25,7 @@ async function main() {
     await io.mkdirP(luaExtractPath)
     if (luaVersion === "latest") {
         await exec.exec("git", ["clone", "https://github.com/lua/lua", "."], { cwd: luaExtractPath });
-    } else if (/beta/.test(luaVersion)) {
+    } else if (/beta/.test(luaVersion) || /rc/.test(luaVersion)) {
         const luaSourceTar = await tc.downloadTool(`https://www.lua.org/work/lua-${luaVersion}.tar.gz`)
         await tc.extractTar(luaSourceTar, path_join(process.cwd(), ".install"))
     } else {
