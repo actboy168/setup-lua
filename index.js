@@ -21,13 +21,17 @@ async function main() {
     if (VERSION_ALIASES[luaVersion]) {
         luaVersion = VERSION_ALIASES[luaVersion]
     }
-    const luaExtractPath = path_join(process.cwd(), ".install", `lua-${luaVersion}`)
+    let luaExtractPath = path_join(process.cwd(), ".install", `lua-${luaVersion}`)
     await io.mkdirP(luaExtractPath)
     if (luaVersion === "latest") {
         await exec.exec("git", ["clone", "https://github.com/lua/lua", "."], { cwd: luaExtractPath });
-    } else if (/beta/.test(luaVersion) || /rc/.test(luaVersion)) {
+    } else if (/beta/.test(luaVersion)) {
         const luaSourceTar = await tc.downloadTool(`https://www.lua.org/work/lua-${luaVersion}.tar.gz`)
         await tc.extractTar(luaSourceTar, path_join(process.cwd(), ".install"))
+    } else if (/rc/.test(luaVersion)) {
+        const luaSourceTar = await tc.downloadTool(`https://www.lua.org/work/lua-${luaVersion}.tar.gz`)
+        await tc.extractTar(luaSourceTar, path_join(process.cwd(), ".install"))
+        luaExtractPath = path_join(process.cwd(), ".install", `lua-${luaVersion.replace(/-rc\d/, "")}`)
     } else {
         const luaSourceTar = await tc.downloadTool(`https://www.lua.org/ftp/lua-${luaVersion}.tar.gz`)
         await tc.extractTar(luaSourceTar, path_join(process.cwd(), ".install"))
